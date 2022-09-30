@@ -1,4 +1,5 @@
 ﻿@using ServiceStack.Text
+@using System.Collections.Concurrent
 @inject IJSRuntime JS
 
 @if (!string.IsNullOrEmpty(contents))
@@ -32,7 +33,9 @@
     [Parameter] public bool IncludeBreadcrumbs { get; set; }
     [Parameter] public bool IncludeGithubLink { get; set; } = true;
 
-    string contents = "";
+    static ConcurrentDictionary<string, string> Cache = new();
+
+    string? contents = "";
 
     public static string GalleryCodeBaseUrl { get; set; } =
     "https://github.com/ServiceStack/ServiceStack/blob/main/ServiceStack.Blazor/tests/UI.Gallery/Gallery.Server/Pages";
@@ -47,14 +50,18 @@
         {
             if (string.IsNullOrEmpty(contents))
             {
-                contents = !string.IsNullOrEmpty(SourceCode)
-                    ? SourceCode
-                    : await DownloadPageContentsAsync(Path!);
-
+                if (!string.IsNullOrEmpty(SourceCode))
+                {
+                    contents = SourceCode;
+                }
+                else if (!Cache.TryGetValue(Path!, out contents))
+                {
+                    Cache[Path!] = contents = await DownloadPageContentsAsync(Path!);
+                }
                 StateHasChanged();
             }
-            await JS.InvokeVoidAsync("hljs.highlightAll");
         }
+        await JS.InvokeVoidAsync("hljs.highlightAll");
     }
 
     public async Task<string> DownloadPageContentsAsync(string relativeUrl)
