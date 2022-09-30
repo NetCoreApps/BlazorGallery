@@ -4,7 +4,7 @@ WORKDIR /app
 COPY ./ .
 RUN dotnet restore
 
-WORKDIR /app/MyApp
+WORKDIR /app/Gallery.Server
 RUN dotnet publish -c release -o /out --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal AS runtime
