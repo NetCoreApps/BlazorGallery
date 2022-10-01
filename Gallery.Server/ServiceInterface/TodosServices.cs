@@ -12,8 +12,7 @@ public class TodosServices : Service
     static readonly PocoDataSource<Todo> Todos = PocoDataSource.Create(new Todo[]
     {
         new () { Id = 1, Text = "Learn" },
-        new () { Id = 2, Text = "Blazor", IsFinished = true },
-        new () { Id = 3, Text = "WASM!" },
+        new () { Id = 2, Text = "Blazor!", IsFinished = true },
     }, nextId: x => x.Select(e => e.Id).Max());
 
     public object Get(QueryTodos query)

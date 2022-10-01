@@ -6,6 +6,7 @@
 </h1>
 
 <form @onsubmit="addTodo" class="max-w-xl">
+<input type="submit" class="hidden">
 <CascadingValue Value=@errorStatus>
 
     <ErrorSummary Except=@VisibleFields />
