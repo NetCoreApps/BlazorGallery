@@ -1,3 +1,3 @@
 # ServiceStack.Blazor Gallery
 
-Galley website showcasing ServiceStack.Blazor components.
+Blazor Server Galley website showcasing ServiceStack.Blazor components.
