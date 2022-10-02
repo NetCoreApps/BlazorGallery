@@ -7,6 +7,8 @@ services:
     ports:
       - "80"
     environment:
+      LC_ALL: en_US.UTF-8
+      LANG: en_US.UTF-8
       VIRTUAL_HOST: ${HOST_DOMAIN}
       WS_HOST: ws://${HOST_DOMAIN}
       WS_PORT: 80
