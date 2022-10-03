@@ -869,6 +869,10 @@ else if (IsCheckbox)
 {
 <CheckboxInput Id=@UseId Status=@Status @bind-Value="Value" @attributes="AllAttributes" Help=@UseHelp />
 }
+else if (UseType == "file")
+{
+<FileInput type=@UseType Id=@UseId Status=@Status @bind-Value="Value" @attributes="AllAttributes" Help=@UseHelp />
+}
 else
 {
 <TextInput type=@UseType Id=@UseId Status=@Status @bind-Value="Value" @attributes="AllAttributes" Help=@UseHelp />
@@ -903,6 +907,40 @@ Sign In
 </div>
 </div>
 }
+@using Microsoft.AspNetCore.Components.Forms
+@typeparam TValue
+@inherits TextInputBase<TValue>
+<div>
+@if (!string.IsNullOrEmpty(UseLabel))
+{
+<label for=@Id class="block text-sm font-medium text-gray-700">@UseLabel</label>
+}
+<div class="mt-1 relative">
+@{
+var cls = @ClassNames("block w-full sm:text-sm rounded-md",
+CssClass("block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100",
+"pr-10 border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500"));
+}
+<InputFile class=@cls id=@Id name=@Id placeHolder=@UsePlaceholder @attributes="IncludeAttributes" />
+@if (HasErrorField)
+{
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+<!-- Heroicon name: solid/exclamation-circle -->
+<svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+</svg>
+</div>
+}
+</div>
+@if (HasErrorField)
+{
+<p class="mt-2 text-sm text-red-500" id=@($"{Id}-error")>@ErrorFieldMessage</p>
+}
+else if (!string.IsNullOrEmpty(UseHelp))
+{
+<p id=@($"{Id}-description") class="text-gray-500">@UseHelp</p>
+}
+</div>
 @using Microsoft.AspNetCore.Components.Forms
 @typeparam TReq
 @inherits UiComponentBase
@@ -1149,67 +1187,21 @@ TableStyle="TableStyle.FullWidth">
 </ModalDialog>
 <QueryPrefs Show=@ShowQueryPrefs Columns="ViewModelColumns" Prefs="ApiPrefs" Done="() => ShowQueryPrefs = false" Save="saveApiPrefs" />
 @using ServiceStack.Text
-@if (!TextUtils.IsComplexType(Value?.GetType()))
+@if (TextUtils.IsComplexType(Value?.GetType()))
+{
+var preview = TextUtils.Dump(Value);
+<span class=@CssUtils.ClassNames(@class) title=@TextUtils.TruncateJson(preview, MaxComplexPreviewLength)>
+@if (IncludeIcon)
+{
+var icon = Value.GetType().GetIcon();
+<Icon class=@IconClass Image=icon />
+}
+@TextUtils.TruncateJson(preview, MaxComplexFieldLength)
+</span>
+}
+else
 {
 @Format(Value);
-}
-else
-{
-if (Value is System.Collections.IEnumerable e && Value is not System.Collections.IDictionary)
-{
-var first = TextUtils.FirstOrDefault(e);
-if (first == null)
-{
-@("[]")
-}
-else
-{
-if (TextUtils.IsComplexType(first.GetType()))
-{
-<span title=@TypeSerializer.Dump(Value)>@Format(Value)</span>
-}
-else
-{
-var i = 0;
-foreach (var item in e)
-{
-if (i++ > 0)
-{
-@(',')
-}
-@TextUtils.GetScalarText(item)
-}
-}
-}
-}
-else
-{
-<span title=@TypeSerializer.Dump(Value)> {
-@{
-var dict = Value.ToObjectDictionary();
-var keys = dict.Keys.ToList();
-var len = Math.Min(MaxNestedFields, keys.Count);
-for (var i = 0; i < len; i++)
-{
-var key = keys[i];
-var val = dict[key];
-var value = Format(val);
-var str = TextUtils.Truncate(value, MaxNestedFieldLength);
-if (i > 0)
-{
-@(", ")
-}
-{
-<b class="font-medium">@key</b>@($": {str}")
-}
-}
-if (keys.Count > len)
-{
-@("...")
-}
-}
-} </span>
-}
 }
 @inherits UiComponentBase
 <button type=@Type @onclick="onclick" class=@ClassNames("inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2", Class)>
