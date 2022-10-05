@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Net.Http.Headers;
 using MyApp;
 using MyApp.Client;
 using MyApp.Client.Data;
@@ -13,6 +14,7 @@ Licensing.RegisterLicense("OSS BSD-3-Clause 2022 https://github.com/NetCoreApps/
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddLogging();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
@@ -39,7 +41,14 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        const int durationInSeconds = 60 * 60 * 24;
+        ctx.Context.Response.Headers[HeaderNames.CacheControl] = "public,max-age=" + durationInSeconds;
+    }
+});
 
 app.UseRouting();
 
@@ -49,6 +58,7 @@ app.MapFallbackToPage("/_Host");
 app.UseServiceStack(new AppHost());
 
 BlazorConfig.Set(new() {
+    Services = app.Services,
     EnableLogging = app.Environment.IsDevelopment(),
     EnableVerboseLogging = app.Environment.IsDevelopment(),
 });

@@ -1190,13 +1190,18 @@ TableStyle="TableStyle.FullWidth">
 @using ServiceStack.Text
 @if (TextUtils.IsComplexType(Value?.GetType()))
 {
-var isCollection = false;
 var useValue = Value;
+var e = Value as IEnumerable;
+var isCollection = e != null && Value is not IDictionary;
+var count = e != null && isCollection && IncludeCount ? EnumerableUtils.Count(e) : 0;
 <span class=@CssUtils.ClassNames(@class)>
-@if (Value is IEnumerable e && Value is not IDictionary)
+@if (isCollection)
 {
-isCollection = true;
 useValue = EnumerableUtils.FirstOrDefault(e);
+}
+@if (count > 0)
+{
+<span class="mr-2">@count</span>
 }
 @if (IncludeIcon)
 {
@@ -1207,9 +1212,8 @@ useValue = EnumerableUtils.FirstOrDefault(e);
 {
 @("[ ")
 }
-{
-@{
-if (TextUtils.IsComplexType(useValue?.GetType()))
+@("{ ")
+@if (TextUtils.IsComplexType(useValue?.GetType()))
 {
 var dict = useValue.ToObjectDictionary();
 var keys = dict.Keys.ToList();
@@ -1238,8 +1242,7 @@ else
 {
 @Format(useValue)
 }
-}
-}
+@(" }")
 @if (isCollection)
 {
 @(" ]")
@@ -1249,7 +1252,7 @@ else
 }
 else
 {
-@Format(Value);
+@Format(Value)
 }
 @inherits UiComponentBase
 @if (!string.IsNullOrEmpty(href))
