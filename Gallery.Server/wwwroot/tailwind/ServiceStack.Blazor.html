@@ -472,6 +472,7 @@ else
 </div>
 @typeparam Model
 @inherits AuthBlazorComponentBase
+@implements IDisposable
 @if (invalidAccess != null)
 {
 <div class="w-body md:w-body overflow-auto">
@@ -910,18 +911,21 @@ Sign In
 @using Microsoft.AspNetCore.Components.Forms
 @typeparam TValue
 @inherits TextInputBase<TValue>
+@implements IAsyncDisposable
+<div class=@ClassNames("flex", !IsMultiple ? "justify-between" : "flex-col")>
 <div>
 @if (!string.IsNullOrEmpty(UseLabel))
 {
 <label for=@Id class="block text-sm font-medium text-gray-700">@UseLabel</label>
 }
-<div class="mt-1 relative">
+<div class="block mt-2">
+<span class="sr-only">UseHelp ?? UseLabel</span>
 @{
 var cls = @ClassNames("block w-full sm:text-sm rounded-md",
 CssClass("block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100",
 "pr-10 border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500"));
 }
-<InputFile class=@cls id=@Id name=@Id placeHolder=@UsePlaceholder @attributes="IncludeAttributes" />
+<InputFile @ref="InputFile" class=@cls id=@Id name=@Id placeHolder=@UsePlaceholder @attributes="IncludeAttributes" OnChange="@OnChange" />
 @if (HasErrorField)
 {
 <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
@@ -941,6 +945,27 @@ else if (!string.IsNullOrEmpty(UseHelp))
 <p id=@($"{Id}-description") class="text-gray-500">@UseHelp</p>
 }
 </div>
+@if (!IsMultiple)
+{
+<div class="shrink-0 cursor-pointer">
+<img @onclick="openFile" class=@ClassNames("h-16 w-16 object-cover", imgCls(imgSrc())) src=@imgSrc() alt=@($"Current {UseLabel}") />
+</div>
+}
+</div>
+@code {
+string? imgSrc()
+{
+var inputFile = inputFiles?.FirstOrDefault();
+if (inputFile != null)
+return inputFile.FilePath;
+if (Value is string val && val != "")
+return FileIcons.FilePathUri(val);
+return null;
+}
+string imgCls(string? src) => string.IsNullOrEmpty(src) || src.StartsWith("data:") || src.EndsWith(".svg")
+? ""
+: "rounded-full";
+}
 @using Microsoft.AspNetCore.Components.Forms
 @typeparam TReq
 @inherits UiComponentBase
