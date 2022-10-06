@@ -966,7 +966,10 @@ if (inputFile != null)
 return inputFile.FilePath;
 var filePath = Value ?? Values?.FirstOrDefault() ?? File?.FilePath ?? Files?.FirstOrDefault()?.FilePath;
 if (filePath != null)
-return FileIcons.FilePathUri(filePath);
+{
+var resolvedFilePath = BlazorConfig.Instance.AssetsPathResolver(filePath);
+return FileIcons.FilePathUri(resolvedFilePath);
+}
 return null;
 }
 string imgCls(string? src) => string.IsNullOrEmpty(src) || src.StartsWith("data:") || src.EndsWith(".svg")
