@@ -949,11 +949,13 @@ else if (!string.IsNullOrEmpty(UseHelp))
 </div>
 @if (!IsMultiple)
 {
-var src = imgSrc();
+var src = UseImageSrc ?? imgSrc();
 if (!string.IsNullOrEmpty(src))
 {
 <div class="shrink-0 cursor-pointer">
-<img @onclick="openFile" class=@ClassNames("h-16 w-16 object-cover", imgCls(src)) src=@src alt=@($"Current {UseLabel}") />
+<img @onclick="openFile" class=@ClassNames("h-16 w-16 object-cover", imgCls(src)) alt=@($"Current {UseLabel}")
+src=@BlazorConfig.Instance.AssetsPathResolver(src)
+@onerror="() => UseImageSrc = BlazorConfig.Instance.FallbackPathResolver(src)">
 </div>
 }
 }
@@ -1239,11 +1241,15 @@ var attrs = (Format.Options != null
 var cls = attrs.Remove("cls", out var oClass) ? oClass as string : null;
 if (Format.Method == FormatMethods.IconRounded)
 {
-<img class=@(cls ?? "w-8 h-8 rounded-full") title=@str src=@str>
+var src = str;
+<img class=@(cls ?? "w-8 h-8 rounded-full") title=@str
+src=@(UseImageSrc ?? BlazorConfig.Instance.AssetsPathResolver(src)) @onerror="() => UseImageSrc = BlazorConfig.Instance.FallbackPathResolver(src)">
 }
 else if (Format.Method == FormatMethods.Icon)
 {
-<img class=@(cls ?? "w-6 h-6") title=@str src=@str>
+var src = str;
+<img class=@(cls ?? "w-6 h-6") title=@str
+src=@(UseImageSrc ?? BlazorConfig.Instance.AssetsPathResolver(src)) @onerror="() => UseImageSrc = BlazorConfig.Instance.FallbackPathResolver(src)">
 }
 else if (Format.Method == FormatMethods.Currency)
 {
