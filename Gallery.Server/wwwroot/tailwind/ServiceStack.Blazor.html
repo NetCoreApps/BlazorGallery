@@ -726,7 +726,7 @@ name=@Id
 @attributes="IncludeAttributes">
 </div>
 <div class="ml-3 text-sm">
-<label class=@ClassNames("font-medium text-gray-700") for=@Id>
+<label class=@ClassNames("font-medium text-gray-700", LabelClass) for=@Id>
 @UseLabel
 </label>
 @if (HasErrorField)
@@ -849,11 +849,11 @@ else if (!string.IsNullOrEmpty(UseHelp))
 @if (IsSelect)
 {
 <SelectInput Id=@UseId Status=@Status TValue="string" Input=@Input
-@bind-Value="Value" @attributes="AllAttributes" Help=@TextUtils.Humanize(UseId) />
+@bind-Value="Value" class=@(Input?.Css?.Input) LabelClass=@(Input?.Css?.Label) Help=@TextUtils.Humanize(UseId) @attributes="AllAttributes" />
 }
 else if (IsCheckbox)
 {
-<CheckboxInput Id=@UseId Status=@Status @bind-Value="Value" @attributes="AllAttributes" Help=@UseHelp />
+<CheckboxInput Id=@UseId Status=@Status @bind-Value="Value" class=@(Input?.Css?.Input) LabelClass=@(Input?.Css?.Label) Help=@UseHelp @attributes="AllAttributes" />
 }
 else if (UseType == "file")
 {
@@ -880,14 +880,14 @@ file = ValueObject.ConvertTo<UploadedFile>();
 }
 }
 }
-<FileInput type=@UseType Id=@UseId Status=@Status @attributes="AllAttributes" Help=@UseHelp
+<FileInput type=@UseType Id=@UseId Status=@Status class=@(Input?.Css?.Input) LabelClass=@(Input?.Css?.Label) Help=@UseHelp @attributes="AllAttributes"
 Multiple=@(Input?.Multiple ?? false) Accept=@(Input?.Accept)
 Value=@value Values=@values File=@file Files=@files
 OnInput="e => Model[Input!.Id] = e" />
 }
 else
 {
-<TextInput type=@UseType Id=@UseId Status=@Status @bind-Value="Value" @attributes="AllAttributes" Help=@UseHelp />
+<TextInput type=@UseType Id=@UseId Status=@Status @bind-Value="Value" class=@(Input?.Css?.Input) LabelClass=@(Input?.Css?.Label) Help=@UseHelp @attributes="AllAttributes" />
 }
 @inherits AuthBlazorComponentBase
 @if (!IsAuthenticated)
@@ -926,7 +926,7 @@ Sign In
 <div>
 @if (!string.IsNullOrEmpty(UseLabel))
 {
-<label for=@Id class="block text-sm font-medium text-gray-700">@UseLabel</label>
+<label for=@Id class=@ClassNames("block text-sm font-medium text-gray-700", LabelClass)>@UseLabel</label>
 }
 <div class="block mt-2">
 <span class="sr-only">UseHelp ?? UseLabel</span>
@@ -957,13 +957,13 @@ else if (!string.IsNullOrEmpty(UseHelp))
 </div>
 @if (!Multiple)
 {
-var src = UseImageSrc ?? imgSrc();
+var src = imgSrc();
 if (!string.IsNullOrEmpty(src))
 {
 <div class="shrink-0 cursor-pointer" title=@(!isDataUri(src) ? src : "")>
 <img @onclick="openFile" class=@ClassNames("h-16 w-16", imgCls(src)) alt=@($"Current {UseLabel}")
-src=@BlazorConfig.Instance.AssetsPathResolver(src)
-@onerror="() => UseImageSrc = BlazorConfig.Instance.FallbackPathResolver(src)">
+src=@(FallbackSrc ?? BlazorConfig.Instance.AssetsPathResolver(src))
+@onerror="() => FallbackSrc = BlazorConfig.Instance.FallbackPathResolver(src)">
 </div>
 }
 }
@@ -974,12 +974,13 @@ else if (FileList.Count > 0)
 @foreach (var file in FileList)
 {
 var filePath = file.FilePath ?? "";
+var src = FileIcons.FilePathUri(filePath)!;
 <tr>
 <td class="pr-6 align-bottom pb-2">
 <div class="flex w-full" title=@(!isDataUri(filePath) ? filePath : "")>
-<img src=@BlazorConfig.Instance.AssetsPathResolver(FileIcons.FilePathUri(filePath)!)
+<img src=@((FallbackSrcMap.TryGetValue(src, out var fallback) ? fallback : null) ?? BlazorConfig.Instance.AssetsPathResolver(src))
 class=@ClassNames("mr-2 h-8 w-8", imgCls(filePath))
-@onerror="() => UseImageSrc = BlazorConfig.Instance.FallbackPathResolver(FileIcons.FilePathUri(filePath)!)">
+@onerror="() => FallbackSrcMap[src] = BlazorConfig.Instance.FallbackPathResolver(src)">
 @if (!isDataUri(filePath))
 {
 <a href=@BlazorConfig.Instance.AssetsPathResolver(filePath) target="_blank" class="overflow-hidden">
@@ -1436,7 +1437,7 @@ string cls = "rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-
 <div>
 @if (!string.IsNullOrEmpty(UseLabel))
 {
-<label for=@Id class="block text-sm font-medium text-gray-700">@UseLabel</label>
+<label for=@Id class=@ClassNames("block text-sm font-medium text-gray-700", LabelClass)>@UseLabel</label>
 }
 <select id=@Id name=@Id class=@ClassNames("mt-1 block w-full pl-3 pr-10 py-2 text-base focus:outline-none border-gray-300 sm:text-sm rounded-md",
 CssClass(valid:"text-gray-900 focus:ring-indigo-500 focus:border-indigo-500",
@@ -1502,7 +1503,7 @@ Close
 <div>
 @if (!string.IsNullOrEmpty(UseLabel))
 {
-<label for=@Id class="block text-sm font-medium text-gray-700">@UseLabel</label>
+<label for=@Id class=@ClassNames("block text-sm font-medium text-gray-700", LabelClass)>@UseLabel</label>
 }
 <div class="mt-1 relative rounded-md shadow-sm">
 <textarea id=@Id name=@Id @bind="CurrentValue" placeHolder=@UsePlaceholder @attributes="IncludeAttributes"
@@ -1525,7 +1526,7 @@ else if (!string.IsNullOrEmpty(UseHelp))
 <div>
 @if (!string.IsNullOrEmpty(UseLabel))
 {
-<label for=@Id class="block text-sm font-medium text-gray-700">@UseLabel</label>
+<label for=@Id class=@ClassNames("block text-sm font-medium text-gray-700", LabelClass)>@UseLabel</label>
 }
 <div class="mt-1 relative rounded-md shadow-sm">
 @{
