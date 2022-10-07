@@ -16,6 +16,13 @@
         <PackageReference Include="ServiceStack.OrmLite.Sqlite" Version="6.*" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="App_Data\db.sqlite" />
+      <Content Include="App_Data\**\*">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
     <!-- <Target Name="Tailwind" BeforeTargets="Build">
         <Exec Command="npm run ui:build" />
     </Target> -->
