@@ -1337,8 +1337,8 @@ var ext = FileIcons.GetExt(fileName);
 var imgSrc = ext == null || FileIcons.CanPreview(url)
 ? BlazorConfig.Instance.AssetsPathResolver(url)
 : FileIcons.IconFallbackSrc(url);
-<a class="flex" href=@BlazorConfig.Instance.AssetsPathResolver(url) title=@url target="_blank">
-<img class="w-6 h-6" src=@imgSrc @onerror="() => UseImageSrc = BlazorConfig.Instance.FallbackPathResolver(imgSrc)">
+<a class=@(cls ?? "flex") href=@BlazorConfig.Instance.AssetsPathResolver(url) title=@url target="_blank">
+<img class=@IconClass src=@imgSrc @onerror="() => UseImageSrc = BlazorConfig.Instance.FallbackPathResolver(imgSrc)">
 <span class="pl-1">@fileName</span>
 </a>
 }
