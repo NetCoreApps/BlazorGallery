@@ -368,7 +368,7 @@ else if (Notes != null)
 </div>
 <AutoFormFields Type="ApiType" Api="api" FormLayout="FormLayout" ModelDictionary="ModelDictionary" />
 </div>
-<div class="flex flex-shrink-0 justify-end px-4 py-4">
+<div class="bg-gray-50 flex flex-shrink-0 justify-end px-4 py-4">
 <SecondaryButton @onclick="OnDone">Cancel</SecondaryButton>
 <PrimaryButton type="submit" class="ml-4">Save</PrimaryButton>
 </div>
@@ -1363,7 +1363,7 @@ useValue = EnumerableUtils.FirstOrDefault(e);
 }
 @if (IncludeIcon)
 {
-<Icon class=@IconRoundedClass Image=Value!.GetType().GetIcon() />
+<Icon class=@ValueIconClass Image=Value!.GetType().GetIcon() />
 }
 <span>
 @if (isCollection)
@@ -1657,6 +1657,7 @@ public static class PreviewFormat
 public const string Class = "flex items-center";
 public const string IconClass = "w-6 h-6";
 public const string IconRoundedClass = "w-8 h-8 rounded-full";
+public const string ValueIconClass = "w-5 h-5 mr-1";
 }
 public static string ToBreakpointCellClass(this Breakpoint breakpoint) => breakpoint switch
 {
