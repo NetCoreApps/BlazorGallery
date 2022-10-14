@@ -267,10 +267,10 @@ else
 @code {
 string BackgroundColor => Type switch
 {
-AlertType.Information => "bg-blue-50",
-AlertType.Error => "bg-red-50",
-AlertType.Success => "bg-green-50",
-_ => "bg-yellow-50"
+AlertType.Information => "bg-blue-50 dark:bg-blue-200",
+AlertType.Error => "bg-red-50 dark:bg-red-200",
+AlertType.Success => "bg-green-50 dark:bg-green-200",
+_ => "bg-yellow-50 dark:bg-yellow-200"
 };
 string BorderColor => Type switch
 {
@@ -290,10 +290,10 @@ _ => "text-yellow-700"
 @inherits AlertSuccessBase
 @if (!dismissed)
 {
-<div class=@(ClassNames("rounded-md bg-green-50 p-4", CssClass())) role="alert">
+<div class=@(ClassNames("rounded-md bg-green-50 dark:bg-green-200 p-4", CssClass())) role="alert">
 <div class="flex">
 <div class="flex-shrink-0">
-<svg class="h-5 w-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+<svg class="h-5 w-5 text-green-400 dark:text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
 </div>
 <div class="ml-3">
 <h3 class="text-sm font-medium text-green-800">
@@ -309,7 +309,7 @@ else
 </div>
 <div class="ml-auto pl-3">
 <div class="-mx-1.5 -my-1.5">
-<button type="button" class="inline-flex rounded-md bg-green-50 p-1.5 text-green-500 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-green-50"
+<button type="button" class="inline-flex rounded-md bg-green-50 dark:bg-green-200 p-1.5 text-green-500 dark:text-green-600 hover:bg-green-100 dark:hover:bg-green-700 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-green-50 dark:ring-offset-green-200"
 @onclick="_ => dismissed = true">
 <span class="sr-only">Dismiss</span>
 <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -788,7 +788,7 @@ else
 <tr class=@TableHeaderRowClass>
 @foreach (var column in VisibleColumns)
 {
-var allowFiltering = AllowFiltering && !TextUtils.IsComplexType(column.FieldType);
+var allowFiltering = AllowFiltering && !TextUtils.IsComplexType(column.FieldType) && !TextUtils.IsComputed(column.FieldType);
 var isOpen = column == ShowFilters;
 <td class=@ClassNames(column.VisibleFrom != null ? $"hidden {column.VisibleFrom.Value.ToBreakpointCellClass()}" : null,
 column.HeaderClass ?? ClassNames(TableHeaderCellClass, isOpen ? "text-gray-900 dark:text-gray-50" : "text-gray-500 dark:text-gray-400", column.@class))>
@@ -920,7 +920,7 @@ Sign In
 @inherits ErrorSummaryBase
 @if (UseStatus.ShowSummary(UseExcept))
 {
-<div class=@(ClassNames("bg-red-50 border-l-4 border-red-400 p-4", CssClass())) role="alert">
+<div class=@(ClassNames("bg-red-50 dark:bg-red-200 border-l-4 border-red-400 p-4", CssClass())) role="alert">
 <div class="flex">
 <div class="flex-shrink-0">
 <!-- Heroicon name: solid/x-circle -->
@@ -929,7 +929,7 @@ Sign In
 </svg>
 </div>
 <div class="ml-3">
-<p class="text-sm text-red-700">@UseStatus.SummaryMessage(UseExcept)</p>
+<p class="text-sm text-red-700 dark:text-red-800">@UseStatus.SummaryMessage(UseExcept)</p>
 </div>
 </div>
 </div>
