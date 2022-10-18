@@ -326,7 +326,7 @@ bool dismissed = false;
 }
 @typeparam T
 @inherits TextInputBase
-<div id=@($"{Id}-autocomplete")>
+<div id=@($"{Id}-autocomplete") class=@FieldClass>
 @if (!string.IsNullOrEmpty(Label))
 {
 <label for=@Id class=@ClassNames("block text-sm font-medium text-gray-700 dark:text-gray-300", LabelClass)>@UseLabel</label>
@@ -335,7 +335,7 @@ bool dismissed = false;
 <input id=@Id type="text" @bind="txtValue" class=@ClassNames("block w-full sm:text-sm rounded-md dark:text-white dark:bg-gray-900",
 CssClass("shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 dark:border-gray-600",
 "pr-10 border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500"))
-role="combobox" aria-controls="options" aria-expanded="false" autocomplete="off" placeholder=@(Multiple || Value == null ? placeholder : "")
+role="combobox" aria-controls="options" aria-expanded="false" autocomplete="off" spellcheck="false" placeholder=@(Multiple || Value == null ? placeholder : "")
 @bind:event="oninput" @onkeydown="OnKeyDown" @onkeyup="OnKeyUp" @onclick="update" @attributes="IncludeAttributes">
 <button type="button" @onclick="toggle" class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none" tabindex="-1">
 <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -1163,7 +1163,7 @@ else
 }
 else
 {
-<div class=@ClassNames("mb-4 text-2xl font-semibold text-gray-900", @class)>
+<div class=@ClassNames("mb-4 text-2xl font-semibold text-gray-900 dark:text-gray-300", @class)>
 <h1 class="flex">
 <svg class=@ClassNames("self-center inline mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300", ImageClass)
 role="status" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1504,13 +1504,13 @@ RenderValue(Value);
 @inherits UiComponentBase
 @if (!string.IsNullOrEmpty(href))
 {
-<a href=@href class=@ClassNames(cls, Class) title=@title target=@target @onclick:stopPropagation>
+<a href=@href class=@ClassNames(cls, Class) title=@title target=@target @onclick:stopPropagation @attributes="IncludeAttributes">
 @ChildContent
 </a>
 }
 else
 {
-<button type=@type @onclick="onclick" class=@ClassNames(cls, Class)>
+<button type=@type @onclick="onclick" class=@ClassNames(cls, Class) @attributes="IncludeAttributes">
 @ChildContent
 </button>
 }
@@ -1523,20 +1523,20 @@ ButtonStyle.Red => "dark:ring-offset-black focus:ring-red-300 text-white bg-red-
 ButtonStyle.Green => "dark:ring-offset-black focus:ring-green-300 text-white bg-green-600 hover:bg-green-700 focus:ring-green-500 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-500",
 ButtonStyle.Sky => "dark:ring-offset-black focus:ring-sky-300 text-white bg-sky-600 hover:bg-sky-700 focus:ring-sky-500 dark:bg-sky-600 dark:hover:bg-sky-700 dark:focus:ring-sky-500",
 ButtonStyle.Cyan => "dark:ring-offset-black focus:ring-cyan-300 text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-cyan-500 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-500",
-_ => "focus:ring-2 focus:ring-offset-2 text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+_ => "dark:ring-offset-black focus:ring-2 focus:ring-offset-2 text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
 };
 string cls => "inline-flex justify-center rounded-md border border-transparent py-2 px-4 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 " + colors;
 }
 @inherits UiComponentBase
 @if (!string.IsNullOrEmpty(href))
 {
-<a href=@href class=@ClassNames(cls, Class) title=@title target=@target @onclick:stopPropagation>
+<a href=@href class=@ClassNames(cls, Class) title=@title target=@target @onclick:stopPropagation @attributes="IncludeAttributes">
 @ChildContent
 </a>
 }
 else
 {
-<button type=@type @onclick="onclick" class=@ClassNames(cls, Class)>
+<button type=@type @onclick="onclick" class=@ClassNames(cls, Class) @attributes="IncludeAttributes">
 @ChildContent
 </button>
 }
@@ -1587,7 +1587,7 @@ invalid:"text-red-900 focus:ring-red-500 focus:border-red-500"))
 }
 </div>
 <div class="flex h-7 items-center">
-<button type="button" @onclick="CloseAsync" class="rounded-md bg-gray-50 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+<button type="button" @onclick="CloseAsync" class=@CssDefaults.Form.CloseButtonClass>
 <span class="sr-only">Close panel</span>
 <!-- Heroicon name: outline/x-mark -->
 <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -1600,9 +1600,9 @@ invalid:"text-red-900 focus:ring-red-500 focus:border-red-500"))
 @ChildContent
 </div>
 <div class="flex flex-shrink-0 justify-end px-4 py-4">
-<button type="button" @onclick="CloseAsync" class="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+<SecondaryButton @onclick="CloseAsync">
 Close
-</button>
+</SecondaryButton>
 </div>
 </form>
 </div>
@@ -1736,7 +1736,8 @@ public const string FormClass = "flex h-full flex-col divide-y divide-gray-200 d
 public const string PanelClass = "pointer-events-auto w-screen xl:max-w-3xl md:max-w-xl max-w-lg";
 public const string TitlebarClass = "bg-gray-50 dark:bg-gray-900 px-4 py-6 sm:px-6";
 public const string HeadingClass = "text-lg font-medium text-gray-900 dark:text-gray-100";
-public const string CloseButtonClass = "rounded-md bg-gray-50 dark:bg-gray-900 text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500";
+public const string CloseButtonClass = "rounded-md bg-gray-50 dark:bg-gray-900 text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:ring-offset-black";
+public const string LegendClass = "text-base font-medium text-gray-900 dark:text-gray-100 text-center mb-4";
 public static DataTransition SlideOverTransition = new DataTransition(
 entering: new(@class: "transform transition ease-in-out duration-500 sm:duration-700", from: "translate-x-full", to: "translate-x-0"),
 leaving: new(@class: "transform transition ease-in-out duration-500 sm:duration-700", from: "translate-x-0", to: "translate-x-full"),
@@ -1749,7 +1750,7 @@ public const string SizeClass = "sm:max-w-prose lg:max-w-screen-md xl:max-w-scre
 public static class SlideOver
 {
 public const string PanelClass = "pointer-events-auto w-screen xl:max-w-3xl md:max-w-xl max-w-lg";
-public const string FormClass = "flex h-full flex-col divide-y divide-gray-200 dark:divide-gray-100 bg-white dark:bg-black shadow-xl";
+public const string FormClass = "flex h-full flex-col divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-black shadow-xl";
 public const string TitlebarClass = "bg-gray-50 dark:bg-gray-900 px-4 py-6 sm:px-6";
 public const string HeadingClass = "text-lg font-medium text-gray-900 dark:text-gray-50";
 public const string TransitionClass = "transform transition ease-in-out duration-500 sm:duration-700";
