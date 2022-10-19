@@ -670,7 +670,7 @@ else
 @if (hasPrefs && ShowResetPreferences)
 {
 <div class="pl-2">
-<button type="button" @onclick="clearPrefs" title="Reset Preferences & Filters" class=@ToolbarButtonClass>
+<button type="button" @onclick="ResetPreferencesAsync" title="Reset Preferences & Filters" class=@ToolbarButtonClass>
 <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 24 24"><path fill="currentColor" d="M6.78 2.72a.75.75 0 0 1 0 1.06L4.56 6h8.69a7.75 7.75 0 1 1-7.75 7.75a.75.75 0 0 1 1.5 0a6.25 6.25 0 1 0 6.25-6.25H4.56l2.22 2.22a.75.75 0 1 1-1.06 1.06l-3.5-3.5a.75.75 0 0 1 0-1.06l3.5-3.5a.75.75 0 0 1 1.06 0Z" /></svg>
 </button>
 </div>
@@ -1567,14 +1567,16 @@ invalid:"text-red-900 focus:ring-red-500 focus:border-red-500"))
 }
 </div>
 @inherits BlazorComponentBase
-<div class="relative z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+<div class=@SlideOverClass aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
 <div class="">
 <div class="">
-<div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
+<div class=@DialogClass>
 <div class=@ClassNames(PanelClass, SlideOverTransition.Class)>
 <form class=@FormClass @onsubmit="CloseAsync">
 <!-- Header -->
 <div class="h-0 flex-1 overflow-y-auto">
+@if (ShowTitlebar)
+{
 <div class=@TitlebarClass>
 <div class="flex items-start justify-between space-x-3">
 <div class="space-y-1">
@@ -1586,8 +1588,10 @@ invalid:"text-red-900 focus:ring-red-500 focus:border-red-500"))
 </div>
 }
 </div>
+@if (ShowCloseButton)
+{
 <div class="flex h-7 items-center">
-<button type="button" @onclick="CloseAsync" class=@CssDefaults.Form.CloseButtonClass>
+<button type="button" @onclick="CloseAsync" class=@CloseButtonClass>
 <span class="sr-only">Close panel</span>
 <!-- Heroicon name: outline/x-mark -->
 <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -1595,15 +1599,20 @@ invalid:"text-red-900 focus:ring-red-500 focus:border-red-500"))
 </svg>
 </button>
 </div>
+}
 </div>
 </div>
+}
 @ChildContent
 </div>
+@if (ShowFooter)
+{
 <div class="flex flex-shrink-0 justify-end px-4 py-4">
 <SecondaryButton @onclick="CloseAsync">
 Close
 </SecondaryButton>
 </div>
+}
 </form>
 </div>
 </div>
@@ -1749,10 +1758,13 @@ public const string SizeClass = "sm:max-w-prose lg:max-w-screen-md xl:max-w-scre
 }
 public static class SlideOver
 {
+public const string SlideOverClass = "relative z-10";
+public const string DialogClass = "pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16";
 public const string PanelClass = "pointer-events-auto w-screen xl:max-w-3xl md:max-w-xl max-w-lg";
 public const string FormClass = "flex h-full flex-col divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-black shadow-xl";
 public const string TitlebarClass = "bg-gray-50 dark:bg-gray-900 px-4 py-6 sm:px-6";
 public const string HeadingClass = "text-lg font-medium text-gray-900 dark:text-gray-50";
+public const string CloseButtonClass = "rounded-md bg-gray-50 dark:bg-black text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:ring-offset-black";
 public const string TransitionClass = "transform transition ease-in-out duration-500 sm:duration-700";
 }
 public static class HtmlFormat
