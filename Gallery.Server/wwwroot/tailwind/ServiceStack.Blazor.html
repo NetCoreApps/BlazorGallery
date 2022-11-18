@@ -1110,7 +1110,7 @@ return null;
 bool isDataUri(string? src) => src == null ? false : src.StartsWith("data:") || src.StartsWith("blob:");
 string imgCls(string? src) => string.IsNullOrEmpty(src) || src.StartsWith("data:") || src.EndsWith(".svg")
 ? ""
-: "rounded-full";
+: "rounded-full object-cover";
 }
 @using Microsoft.AspNetCore.Components.Forms
 @typeparam TReq
