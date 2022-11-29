@@ -48,7 +48,7 @@ app.MapFallbackToPage("/_Host");
 app.UseServiceStack(new AppHost());
 
 BlazorConfig.Set(new() {
-    //UseInProcessClient = true,
+    UseInProcessClient = true,
     Services = app.Services,
     JSParseObject = JS.ParseObject,
     EnableLogging = app.Environment.IsDevelopment(),
