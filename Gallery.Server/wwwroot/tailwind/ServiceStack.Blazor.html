@@ -332,7 +332,7 @@ bool dismissed = false;
 <label for=@Id class=@ClassNames("block text-sm font-medium text-gray-700 dark:text-gray-300", LabelClass)>@UseLabel</label>
 }
 <div class="relative mt-1">
-<input id=@Id type="text" @bind-value="txtValue" @bind:event="oninput" class=@ClassNames("block w-full sm:text-sm rounded-md dark:text-white dark:bg-gray-900",
+<input id=@Id type="text" @bind-value="txtValue" @bind-value:event="oninput" class=@ClassNames("block w-full sm:text-sm rounded-md dark:text-white dark:bg-gray-900",
 CssClass("shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 dark:border-gray-600",
 "pr-10 border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500"))
 role="combobox" aria-controls="options" aria-expanded="false" autocomplete="off" spellcheck="false" placeholder=@(Multiple || Value == null ? placeholder : "")
@@ -973,7 +973,7 @@ class=@ClassNames(CssDefaults.Grid.GetTableRowClass(TableStyle, i++, IsSelected(
 <input type="date" class=@ClassNames("block w-full sm:text-sm rounded-md",
 CssClass("shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 dark:border-gray-600 dark:text-white dark:bg-gray-900",
 "pr-10 border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500"))
-id=@Id name=@Id @bind="CurrentValueAsDateTime" placeHolder=@UsePlaceholder @bind:event="oninput" @attributes="IncludeAttributes">
+id=@Id name=@Id @bind-value="CurrentValueAsDateTime" placeHolder=@UsePlaceholder @bind-value:event="oninput" @attributes="IncludeAttributes">
 @if (HasErrorField)
 {
 <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
@@ -1747,10 +1747,10 @@ CssClass("shadow-sm border-gray-300 dark:border-gray-600 focus-within:ring-indig
 </div>
 }
 <div class="pt-1.5 pl-1 shrink">
-<input @ref=@txtInput type=@UseType id=@Id name=@Id @bind="InputValue" placeHolder=@placeholder
+<input @ref=@txtInput type=@UseType id=@Id name=@Id @bind-value="InputValue" placeHolder=@placeholder
 class="p-0 dark:bg-transparent rounded-md border-none focus:!border-none focus:!outline-none"
 style=@($"box-shadow:none !important;width:{InputValue.Length + 1}ch")
-@onkeydown="KeyDownAsync" @onkeypress="KeyPressAsync" @bind:event="oninput" @onpaste="OnPasteAsync" @onblur="OnBlurAsync"
+@onkeydown="KeyDownAsync" @onkeypress="KeyPressAsync" @bind-value:event="oninput" @onpaste="OnPasteAsync" @onblur="OnBlurAsync"
 @attributes="IncludeAttributes">
 </div>
 </div>
@@ -1811,11 +1811,11 @@ CssClass("shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-30
 }
 @if (UseType == Html.Input.Types.Textarea)
 {
-<textarea type=@UseType class=@cls id=@Id name=@Id @bind="CurrentValue" placeHolder=@UsePlaceholder @bind:event="oninput" @attributes="IncludeAttributes"></textarea>
+<textarea type=@UseType class=@cls id=@Id name=@Id @bind-value="CurrentValue" placeHolder=@UsePlaceholder @bind-value:event="oninput" @attributes="IncludeAttributes"></textarea>
 }
 else
 {
-<input type=@UseType class=@cls id=@Id name=@Id @bind="CurrentValue" placeHolder=@UsePlaceholder @bind:event="oninput" @attributes="IncludeAttributes">
+<input type=@UseType class=@cls id=@Id name=@Id @bind-value="CurrentValue" placeHolder=@UsePlaceholder @bind-value:event="oninput" @attributes="IncludeAttributes">
 }
 @if (HasErrorField)
 {
