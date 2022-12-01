@@ -1073,7 +1073,7 @@ Sign In
 }
 @using Microsoft.AspNetCore.Components.Forms
 @inherits TextInputBase
-@implements IAsyncDisposable
+@implements IDisposable
 <div class=@ClassNames("flex", !Multiple ? "justify-between" : "flex-col")>
 <div>
 @if (!string.IsNullOrEmpty(UseLabel))
