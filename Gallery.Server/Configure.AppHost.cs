@@ -23,8 +23,7 @@ public class AppHost : AppHostBase, IHostingStartup
             "http://localhost:5000",
             "https://localhost:5001",
             "https://localhost:7142",
-            "http://localhost:5173", //vite dev
-            "https://docs.servicestack.net",
+            "http://localhost:3000",
             "https://" + Environment.GetEnvironmentVariable("DEPLOY_CDN")
         }, allowCredentials: true));
 
