@@ -217,9 +217,11 @@ public class Migration1002 : MigrationBase
 
     public override void Up()
     {
-        var profilesDir = Path.GetFullPath(Path.Join(AppContext.BaseDirectory, "../../../wwwroot", "profiles"));
-        var sourceDir = Path.GetFullPath(Path.Join(AppContext.BaseDirectory, "../../../Migrations/seed"));
-        var targetDir = Path.GetFullPath(Path.Join(AppContext.BaseDirectory, "../../../App_Data"));
+        
+        var profilesDir = HostContext.AppHost.IsDevelopmentEnvironment() ? "./wwwroot/profiles" : 
+            Path.GetFullPath(Path.Join(AppContext.BaseDirectory, "./wwwroot", "profiles"));
+        var sourceDir = Path.GetFullPath(Path.Join(AppContext.BaseDirectory, "./Migrations/seed"));
+        var targetDir = Path.GetFullPath(Path.Join(AppContext.BaseDirectory, "./App_Data"));
 
         Db.CreateTable<Contact>();
         Db.CreateTable<Job>();
