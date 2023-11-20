@@ -13,6 +13,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<List<WeatherForecast>>("data/weather.json") ?? new();
+        forecasts = await Http.GetFromJsonAsync<List<WeatherForecast>>("/data/weather.json") ?? new();
     }
 }
