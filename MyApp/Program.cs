@@ -9,6 +9,8 @@ using MyApp.Data;
 using MyApp.Identity;
 using MyApp.Components;
 
+ServiceStack.Licensing.RegisterLicense("OSS MIT 2023 https://github.com/NetCoreApps/BlazorGallery Gj64/BYUNNVLCOjQeagNfHeCC88VX92bVhcM7lwnLj9CRA6hUtBTFL2TYACuEVk+z9WqWIYDDUndA+aJqU1rqoe0OWSEtVuppRH2GzKnDcYcDi3PabbEhyzZ/x8i5J7Z1Gx+JzZLsc6Ctr/svN5hZXPHShcUFL6bhN7nVitwXdU=");
+
 var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
