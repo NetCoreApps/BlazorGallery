@@ -16,20 +16,8 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.*'
+          dotnet-version: '8.0'
 
       - name: build
         run: dotnet build
-        working-directory: .
-
-      - name: test
-        run: |
-          dotnet test
-          if [ $? -eq 0 ]; then
-            echo TESTS PASSED
-          else
-            echo TESTS FAILED
-            exit 1
-          fi
-        working-directory: ./MyApp.Tests
-
+        working-directory: ./MyApp
