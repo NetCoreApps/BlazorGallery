@@ -47,6 +47,9 @@
         <Content Include="Migrations\seed\sample_resume.pdf">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+        <Content Update="wwwroot\data\weather.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <Target Name="tailwind" BeforeTargets="Publish">
