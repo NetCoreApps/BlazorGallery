@@ -83,6 +83,8 @@ function toggleSidebar() {
 }
 document.addEventListener('DOMContentLoaded', () =>
     Blazor.addEventListener('enhancedload', hideSidebar))
+    
+hideSidebar();
 </script>
 
 @code {
