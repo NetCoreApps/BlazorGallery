@@ -8,6 +8,7 @@ using ServiceStack.Blazor;
 using MyApp.Data;
 using MyApp.Identity;
 using MyApp.Components;
+using MyApp.ServiceInterface;
 
 ServiceStack.Licensing.RegisterLicense("OSS MIT 2023 https://github.com/NetCoreApps/BlazorGallery Gj64/BYUNNVLCOjQeagNfHeCC88VX92bVhcM7lwnLj9CRA6hUtBTFL2TYACuEVk+z9WqWIYDDUndA+aJqU1rqoe0OWSEtVuppRH2GzKnDcYcDi3PabbEhyzZ/x8i5J7Z1Gx+JzZLsc6Ctr/svN5hZXPHShcUFL6bhN7nVitwXdU=");
 
@@ -54,6 +55,17 @@ services.AddScoped(c => new HttpClient { BaseAddress = new Uri(baseUrl) });
 services.AddBlazorServerIdentityApiClient(baseUrl);
 services.AddLocalStorage();
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// Register all services
+builder.Services.AddServiceStack(typeof(MyServices).Assembly, c => {
+    c.AddSwagger(o => {
+        //o.AddJwtBearer();
+        o.AddBasicAuth();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -68,6 +80,9 @@ else
     app.UseHsts();
 }
 
+app.UseSwagger();
+app.UseSwaggerUI();
+
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
@@ -79,7 +94,10 @@ app.MapRazorComponents<App>()
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
 
-app.UseServiceStack(new AppHost());
+app.UseServiceStack(new AppHost(), options =>
+{
+    options.MapEndpoints();
+});
 
 BlazorConfig.Set(new()
 {
