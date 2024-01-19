@@ -15,7 +15,7 @@ public class Movie
 }
 
 [Tag("Movies")]
-public class MovieGETRequest : IReturn<Movie>
+public class MovieGETRequest : IGet, IReturn<Movie>
 {
     [Description("Unique Id of the movie"), ValidateNotEmpty]
     [Input(Required = true)]
@@ -26,7 +26,7 @@ public class MovieGETRequest : IReturn<Movie>
 [Field(nameof(MovieID), Disabled = true)]
 [Field(nameof(MovieNo), Disabled = true)]
 [Field(nameof(MovieRef), Ignore = true)]
-public class MoviePOSTRequest : Movie, IReturn<Movie>
+public class MoviePOSTRequest : Movie, IPost, IReturn<Movie>
 {
     // [Input(Ignore = true)]
     // public override string? MovieRef { get; set; }

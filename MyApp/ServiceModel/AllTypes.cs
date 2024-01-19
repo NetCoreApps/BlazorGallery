@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 
 namespace MyApp.ServiceModel;
 
-public class AllTypes : IReturn<AllTypes>
+public class AllTypes : IGet, IReturn<AllTypes>
 {
     public int Id { get; set; }
     public int? NullableId { get; set; }

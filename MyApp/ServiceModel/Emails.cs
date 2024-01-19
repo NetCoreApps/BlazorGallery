@@ -5,7 +5,7 @@ namespace MyApp.ServiceModel;
 
 [ExcludeMetadata]
 [Restrict(InternalOnly = true)]
-public class SendEmail : IReturn<EmptyResponse>
+public class SendEmail : IPost, IReturn<EmptyResponse>
 {
     public string To { get; set; }
     public string? ToName { get; set; }
