@@ -10,7 +10,7 @@ using MyApp.Identity;
 using MyApp.Components;
 using MyApp.ServiceInterface;
 
-ServiceStack.Licensing.RegisterLicense("OSS MIT 2023 https://github.com/NetCoreApps/BlazorGallery Gj64/BYUNNVLCOjQeagNfHeCC88VX92bVhcM7lwnLj9CRA6hUtBTFL2TYACuEVk+z9WqWIYDDUndA+aJqU1rqoe0OWSEtVuppRH2GzKnDcYcDi3PabbEhyzZ/x8i5J7Z1Gx+JzZLsc6Ctr/svN5hZXPHShcUFL6bhN7nVitwXdU=");
+ServiceStack.Licensing.RegisterLicense("OSS GPL-3.0 2024 https://github.com/NetCoreApps/BlazorGallery lgVm0Hyc7zQFtTqEvZnCPQGYyHW+vEj7jOnS2IDhbuC07XNXb5mP5cTe3hNH70dcoA3D58W5L/3V96qZsJLp8tS/gXFUEDYMaAfyzKDfLxHz8M3H0i/u9W1hCDvMRCUDjhBL85VTdBPqmYspQ9pril4J4Xf79R9OAXzE9uUlfss=");
 
 var builder = WebApplication.CreateBuilder(args);
 
