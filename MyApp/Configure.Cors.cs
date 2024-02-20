@@ -19,5 +19,15 @@ public class ConfigureCors : IHostingStartup
                     .SetPreflightMaxAge(TimeSpan.FromHours(1));
                 });
             });
+            services.AddTransient<IStartupFilter, StartupFilter>();
         });
+
+    public class StartupFilter : IStartupFilter
+    {
+        public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next) => app =>
+        {
+            app.UseCors();
+            next(app);
+        };
+    }        
 }
