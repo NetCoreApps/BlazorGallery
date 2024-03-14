@@ -1,5 +1,5 @@
 ﻿@page "/gallery/datagrid/custom"
-@inject HttpClient Http
+@inject IHttpClientFactory HttpClientFactory
 
 <DataGrid Items=@forecasts class="max-w-screen-md" TableStyle="TableStyle.StripedRows | TableStyle.UppercaseHeadings">
     <Column Field="(WeatherForecast x) => x.Date" Format="dd/MM/yyyy" />
@@ -9,10 +9,16 @@
 </DataGrid>
 
 @code {
+    private HttpClient _httpClient;
+
+    protected override void OnInitialized()
+    {
+        _httpClient = HttpClientFactory.CreateClient("Blazor");
+    }
     List<WeatherForecast> forecasts = new();
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<List<WeatherForecast>>("/data/weather.json") ?? new();
+        forecasts = await _httpClient.GetFromJsonAsync<List<WeatherForecast>>("/data/weather.json") ?? new();
     }
 }

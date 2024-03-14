@@ -1,5 +1,5 @@
 ﻿@page "/fetchdata"
-@inject HttpClient Http
+@inject IHttpClientFactory HttpClientFactory
 
 <h1 class="mb-4 text-2xl font-semibold text-gray-900 dark:text-gray-100">
     Weather forecast
@@ -24,10 +24,16 @@ else
 <ExampleCode Title="Source Code" Path="/FetchData.razor" />
 
 @code {
+    private HttpClient _httpClient;
+
+    protected override void OnInitialized()
+    {
+        _httpClient = HttpClientFactory.CreateClient("Blazor");
+    }
     List<WeatherForecast> forecasts = new();
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<List<WeatherForecast>>("data/weather.json") ?? forecasts;
+        forecasts = await _httpClient.GetFromJsonAsync<List<WeatherForecast>>("data/weather.json") ?? forecasts;
     }
 }

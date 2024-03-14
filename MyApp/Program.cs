@@ -51,7 +51,7 @@ services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, AdditionalUserC
 
 var baseUrl = builder.Configuration["ApiBaseUrl"] ??
     (builder.Environment.IsDevelopment() ? "https://localhost:5001" : "http://" + IPAddress.Loopback);
-services.AddScoped(c => new HttpClient { BaseAddress = new Uri(baseUrl) });
+services.AddHttpClient("Blazor", client => client.BaseAddress = new Uri(baseUrl));
 services.AddBlazorServerIdentityApiClient(baseUrl);
 services.AddLocalStorage();
 
