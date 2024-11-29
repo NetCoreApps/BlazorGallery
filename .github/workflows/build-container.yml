@@ -42,16 +42,10 @@ jobs:
             echo "HAS_DEPLOY_ACTION=false" >> $GITHUB_ENV
           fi
 
-      # This step is for the deployment of the templates only, safe to delete
-      - name: Modify csproj for template deploy
-        if: env.HAS_DEPLOY_ACTION == 'true'
-        run: |
-          sed -i 's#<ContainerLabel Include="service" Value="blazor-gallery" />#<ContainerLabel Include="service" Value="${{ env.repository_name_lower }}" />#g' BlazorGallery/BlazorGallery.csproj
-
       - name: Check for Client directory and package.json
         id: check_client
         run: |
-          if [ -d "BlazorGallery.Client" ] && [ -f "BlazorGallery.Client/package.json" ]; then
+          if [ -d "MyApp.Client" ] && [ -f "MyApp.Client/package.json" ]; then
             echo "client_exists=true" >> $GITHUB_OUTPUT
           else
             echo "client_exists=false" >> $GITHUB_OUTPUT
@@ -65,7 +59,7 @@ jobs:
 
       - name: Install npm dependencies
         if: steps.check_client.outputs.client_exists == 'true'
-        working-directory: ./BlazorGallery.Client
+        working-directory: ./MyApp.Client
         run: npm install
 
       - name: Install x tool
@@ -73,7 +67,7 @@ jobs:
 
       - name: Apply Production AppSettings
         if: env.HAS_APPSETTINGS_PATCH == 'true'
-        working-directory: ./BlazorGallery
+        working-directory: ./MyApp
         run: |
           cat <<EOF >> appsettings.json.patch
           ${{ secrets.APPSETTINGS_PATCH }}
@@ -93,5 +87,6 @@ jobs:
           dotnet-version: '8.0'
 
       - name: Build and push Docker image
+        working-directory: ./MyApp
         run: |
           dotnet publish --os linux --arch x64 -c Release -p:ContainerRepository=${{ env.image_repository_name }} -p:ContainerRegistry=ghcr.io -p:ContainerImageTags=latest -p:ContainerPort=80
