@@ -86,6 +86,12 @@ jobs:
         with:
           dotnet-version: '8.0'
 
+      - name: Install tailwindcss
+        run: |
+          mkdir -p /home/runner/.local/bin
+          curl -o "/home/runner/.local/bin/tailwindcss" -L "https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64"
+          chmod +x /home/runner/.local/bin/tailwindcss
+
       - name: Build and push Docker image
         working-directory: ./MyApp
         run: |
