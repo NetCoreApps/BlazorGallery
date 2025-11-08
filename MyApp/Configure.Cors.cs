@@ -12,7 +12,8 @@ public class ConfigureCors : IHostingStartup
                     policy.WithOrigins([
                         "http://localhost:5000", "https://localhost:5001", "http://localhost:8080",
                         "https://localhost:5173", "http://localhost:5173",
-                        "https://docs.servicestack.net","https://press-react.servicestack.net"
+                        "https://docs.servicestack.net","https://press-react.servicestack.net",
+                        "https://react.servicestack.net",
                     ])
                     .AllowCredentials()
                     .WithHeaders(["Content-Type", "Allow", "Authorization"])
