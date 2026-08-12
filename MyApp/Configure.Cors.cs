@@ -10,8 +10,8 @@ public class ConfigureCors : IHostingStartup
             services.AddCors(options => {
                 options.AddDefaultPolicy(policy => {
                     policy.WithOrigins([
-                        "http://localhost:5000", "https://localhost:5001", "http://localhost:8080",
-                        "https://localhost:5173", "http://localhost:5173",
+                        "http://localhost:5000", "https://localhost:5001", "https://localhost:5002", 
+                        "http://localhost:8080", "https://localhost:5173", "http://localhost:5173",
                         "https://docs.servicestack.net","https://press-react.servicestack.net",
                         "https://react.servicestack.net",
                     ])
